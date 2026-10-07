@@ -89,15 +89,17 @@ const embed = (ctx, w, h, t) => {
 
 const residual = (ctx, w, h) => {
   const n = tokens.length;
-  const gap = (w - 40) / n;
+  const gap = (w - 80) / n;
+  const barW = gap * 0.55;
   tokens.forEach((tok, i) => {
-    const x = 20 + i * gap;
-    for (let k = 0; k < 18; k++) {
-      ctx.fillStyle = `rgba(180,200,255,${0.15 + (k % 4) * 0.1})`;
-      ctx.fillRect(x, h * 0.25 + k * 10, Math.max(6, gap - 10), 6);
+    const x = 40 + i * gap;
+    for (let k = 0; k < 14; k++) {
+      ctx.fillStyle = i === 4 ? amber : `rgba(180,200,255,${0.2 + (k % 4) * 0.12})`;
+      ctx.fillRect(x, h * 0.24 + k * 18, barW, 11);
     }
-    label(ctx, String(i), x, h * 0.25 + 196);
+    label(ctx, String(i), x, h * 0.8);
   });
+  label(ctx, "h  10 x 4096", 40, h * 0.16, dim);
 };
 
 const add = (ctx, w, h, t) => {
@@ -114,26 +116,30 @@ const add = (ctx, w, h, t) => {
   ctx.globalAlpha = 1;
 };
 
-const matmul = (ctx, w, h, t) => {
-  const cell = 16;
-  const ax = w * 0.18;
+const matmul = (ctx, w, h) => {
+  const cell = 28;
+  const ax = w * 0.14;
   const ay = h * 0.32;
   for (let r = 0; r < 4; r++) {
     for (let c = 0; c < 3; c++) {
-      ctx.fillStyle = r === 1 ? amber : "rgba(159,208,255,.35)";
-      ctx.fillRect(ax + c * cell, ay + r * cell, cell - 2, cell - 2);
+      ctx.fillStyle = r === 1 ? amber : "rgba(159,208,255,.45)";
+      ctx.fillRect(ax + c * cell, ay + r * cell, cell - 4, cell - 4);
     }
   }
-  const bx = ax + 70;
+  const bx = ax + 140;
   for (let r = 0; r < 3; r++) {
     for (let c = 0; c < 5; c++) {
-      ctx.fillStyle = c === 2 ? violet : "rgba(183,166,255,.3)";
-      ctx.fillRect(bx + c * cell, ay + r * cell, cell - 2, cell - 2);
+      ctx.fillStyle = c === 2 ? violet : "rgba(183,166,255,.45)";
+      ctx.fillRect(bx + c * cell, ay + r * cell, cell - 4, cell - 4);
     }
   }
-  label(ctx, "A 4×3", ax, ay - 12);
-  label(ctx, "B 3×5", bx, ay - 12);
-  label(ctx, "row · col → sum", ax, ay + 90, amber);
+  const cx0 = bx + 190;
+  ctx.fillStyle = amber;
+  ctx.fillRect(cx0, ay + cell, cell - 4, cell - 4);
+  label(ctx, "A 4x3", ax, ay - 16);
+  label(ctx, "B 3x5", bx, ay - 16);
+  label(ctx, "C", cx0, ay - 16, amber);
+  label(ctx, "row · col → sum", ax, ay + 150, amber);
 };
 
 const rms = (ctx, w, h, t) => {
@@ -151,13 +157,21 @@ const rms = (ctx, w, h, t) => {
 };
 
 const qkv = (ctx, w, h) => {
+  const bw = 160;
+  const bh = 200;
   ["Q", "K", "V"].forEach((name, i) => {
-    const x = w * (0.18 + i * 0.28);
+    const x = w * 0.12 + i * (bw + 56);
     ctx.strokeStyle = [cyan, violet, amber][i];
-    ctx.strokeRect(x, h * 0.3, 64, 120);
-    label(ctx, name, x + 24, h * 0.3 + 64, ink);
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(x, h * 0.24, bw, bh);
+    for (let k = 0; k < 7; k++) {
+      ctx.globalAlpha = 0.3 + (k % 3) * 0.15;
+      ctx.fillStyle = [cyan, violet, amber][i];
+      ctx.fillRect(x + 18, h * 0.3 + k * 22, bw - 36, 10);
+    }
+    ctx.globalAlpha = 1;
+    label(ctx, name, x + 70, h * 0.24 + bh + 28, ink);
   });
-  label(ctx, "one matmul, three slices", 24, h * 0.3 - 16);
 };
 
 const rope = (ctx, w, h, t) => {
@@ -168,13 +182,13 @@ const rope = (ctx, w, h, t) => {
     const cy = h * 0.46;
     ctx.strokeStyle = dim;
     ctx.beginPath();
-    ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+    ctx.arc(cx, cy, 28, 0, Math.PI * 2);
     ctx.stroke();
     const a = t * speed * 2;
     ctx.strokeStyle = i < 3 ? amber : cyan;
     ctx.beginPath();
     ctx.moveTo(cx, cy);
-    ctx.lineTo(cx + Math.cos(a) * 16, cy + Math.sin(a) * 16);
+    ctx.lineTo(cx + Math.cos(a) * 24, cy + Math.sin(a) * 24);
     ctx.stroke();
   }
   label(ctx, "fast", 20, h * 0.46 + 40, amber);
@@ -188,7 +202,7 @@ const heads = (ctx, w, h, t) => {
     for (let c = 0; c <= r; c++) {
       const hot = c === Math.floor((t * 2) % n) && r === n - 1;
       ctx.fillStyle = hot ? amber : `rgba(159,208,255,${0.15 + c / n})`;
-      ctx.fillRect(20 + c * cw, h * 0.24 + r * 16, cw - 4, 12);
+      ctx.fillRect(40 + c * cw, h * 0.22 + r * 28, cw - 8, 18);
     }
   }
   label(ctx, "causal mask", 20, h * 0.24 - 12);
@@ -198,7 +212,7 @@ const concat = (ctx, w, h, t) => {
   const x = w * 0.2;
   for (let i = 0; i < 8; i++) {
     ctx.fillStyle = i === Math.floor(t) % 8 ? amber : violet;
-    ctx.fillRect(x + i * 22, h * 0.34 + Math.sin(t + i) * 8, 16, 48);
+    ctx.fillRect(x + i * 36, h * 0.32 + Math.sin(t + i) * 10, 24, 72);
   }
   ctx.fillStyle = cyan;
   ctx.fillRect(x, h * 0.58, 176, 14);

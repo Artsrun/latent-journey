@@ -24,6 +24,7 @@ const paintChrome = () => {
   note.textContent = page.note;
   meta.textContent = `${page.id}  ${page.chapter}`;
   hud.textContent = `${pad(index + 1)} / ${pad(pages.length)}`;
+  document.documentElement.style.setProperty("--p", `${((index + 1) / pages.length) * 100}%`);
   toc.querySelectorAll("button").forEach((btn, n) => {
     if (n === index) btn.setAttribute("aria-current", "location");
     else btn.removeAttribute("aria-current");
