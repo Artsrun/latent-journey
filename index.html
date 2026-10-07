@@ -5,38 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Latent Journey — live canvas forward pass through an LLM.">
 <title>Latent Journey</title>
-<link rel="stylesheet" href="deck.css?v=3">
+<link rel="stylesheet" href="deck.css?v=4">
 </head>
 <body>
 <header class="top">
   <a class="home" href="https://artsrun.github.io/">Artsrun</a>
-  <p class="mark">Latent Journey</p>
+  <p class="hud" id="hud" aria-live="polite">01 / 19</p>
   <button type="button" id="open-index" aria-haspopup="dialog" aria-controls="index">Index</button>
 </header>
 <main>
-  <div class="meter" aria-hidden="true"><span id="meter"></span></div>
-  <div class="stage-wrap">
-    <canvas id="stage" aria-hidden="true"></canvas>
-    <button type="button" class="zone prev" id="zone-prev" aria-label="Previous page"></button>
-    <button type="button" class="zone next" id="zone-next" aria-label="Next page"></button>
-  </div>
-  <div class="rail" id="rail" role="tablist" aria-label="Pages"></div>
+  <canvas id="stage" aria-hidden="true"></canvas>
   <section class="copy" aria-live="polite">
     <p class="meta" id="meta"></p>
     <h1 id="title"></h1>
     <p class="formula" id="formula"></p>
     <p class="note" id="note"></p>
-    <p class="links">
-      <a href="https://artsrun.github.io/">artsrun.github.io</a>
-      <a href="stills.html">stills</a>
-      <a href="https://x.com/kimizllm/status/2106089511411409081">source film</a>
-    </p>
-    <p class="hint">Tap the stage edges, swipe, or use arrows. Hold to pause. <kbd>i</kbd> opens the index.</p>
   </section>
 </main>
 <nav class="pager" aria-label="Page">
   <button type="button" id="prev">Prev</button>
-  <p class="hud" id="hud" aria-live="polite">01 / 19</p>
+  <p class="links"><a href="stills.html">stills</a> · <a href="https://x.com/kimizllm/status/2106089511411409081">film</a></p>
   <button type="button" id="next">Next</button>
 </nav>
 <dialog id="index" aria-label="Chapter index">
@@ -48,6 +36,6 @@
     <ol id="toc"></ol>
   </form>
 </dialog>
-<script type="module" src="deck.js?v=3"></script>
+<script type="module" src="deck.js?v=4"></script>
 </body>
 </html>

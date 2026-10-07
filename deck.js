@@ -5,7 +5,6 @@ const canvas = document.getElementById("stage");
 const ctx = canvas.getContext("2d");
 const hud = document.getElementById("hud");
 const toc = document.getElementById("toc");
-const rail = document.getElementById("rail");
 const dialog = document.getElementById("index");
 const title = document.getElementById("title");
 const formula = document.getElementById("formula");
@@ -25,11 +24,8 @@ const paintChrome = () => {
   note.textContent = page.note;
   meta.textContent = `${page.id} · ${page.chapter}`;
   hud.textContent = `${pad(index + 1)} / ${pad(pages.length)}`;
-  document.documentElement.style.setProperty("--p", `${((index + 1) / pages.length) * 100}%`);
-  document.querySelectorAll("[data-go]").forEach((btn) => {
-    const on = Number(btn.dataset.go) === index;
-    btn.setAttribute("aria-current", on ? (btn.closest("#toc") ? "location" : "true") : "false");
-    if (on && btn.parentElement === rail) btn.scrollIntoView({ inline: "center", block: "nearest" });
+  toc.querySelectorAll("[data-go]").forEach((btn) => {
+    btn.setAttribute("aria-current", Number(btn.dataset.go) === index ? "location" : "false");
   });
   history.replaceState(null, "", `#${page.id}`);
 };
@@ -57,23 +53,21 @@ const go = (next) => {
 toc.innerHTML = pages.map((page, i) => `
   <li><button type="button" data-go="${i}"><small>${page.id}</small><span>${page.title}</span></button></li>
 `).join("");
-rail.innerHTML = pages.map((page, i) => `<button type="button" data-go="${i}" role="tab">${page.id}</button>`).join("");
 
 document.getElementById("next").onclick = () => go(index + 1);
 document.getElementById("prev").onclick = () => go(index - 1);
-document.getElementById("zone-next").onclick = () => go(index + 1);
-document.getElementById("zone-prev").onclick = () => go(index - 1);
 document.getElementById("open-index").onclick = () => dialog.showModal();
-addEventListener("click", (event) => {
+toc.addEventListener("click", (event) => {
   const btn = event.target.closest("[data-go]");
   if (!btn) return;
-  if (dialog.open) dialog.close();
+  dialog.close();
   go(Number(btn.dataset.go));
 });
 addEventListener("keydown", (event) => {
+  if (event.target.closest("dialog")) return;
   if (event.key === "ArrowRight" || event.key === "ArrowDown") { event.preventDefault(); go(index + 1); }
   if (event.key === "ArrowLeft" || event.key === "ArrowUp") { event.preventDefault(); go(index - 1); }
-  if (event.key === " " ) { event.preventDefault(); paused = !paused; }
+  if (event.key === " ") { event.preventDefault(); paused = !paused; }
   if (event.key === "i" && !dialog.open) dialog.showModal();
 });
 
