@@ -22,7 +22,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--amber); outline
 main {
   width: min(100% - 28px, 880px);
   margin: 0 auto;
-  min-height: calc(100dvh - 120px);
+  min-height: calc(100svh - 120px);
   display: grid;
   align-content: center;
   gap: 16px;
