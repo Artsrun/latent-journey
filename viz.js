@@ -17,7 +17,7 @@ const stars = (ctx, w, h, t) => {
 
 const label = (ctx, text, x, y, color = dim) => {
   ctx.fillStyle = color;
-  ctx.font = "12px ui-monospace, SFMono-Regular, Menlo, monospace";
+  ctx.font = "15px ui-monospace, SFMono-Regular, Menlo, monospace";
   ctx.fillText(text, x, y);
 };
 
@@ -282,8 +282,16 @@ const end = (ctx, w, h) => {
 
 const stages = { title, lookup, bpe, embed, residual, add, matmul, rms, qkv, rope, heads, concat, swiglu, depth, logits, topp, kv, growth, end };
 
+const LW = 960;
+const LH = 540;
+
 export const drawStage = (ctx, w, h, stage, t) => {
   ctx.clearRect(0, 0, w, h);
-  stars(ctx, w, h, t);
-  (stages[stage] || title)(ctx, w, h, t);
+  const u = Math.min(w / LW, h / LH);
+  ctx.save();
+  ctx.translate((w - LW * u) / 2, (h - LH * u) / 2);
+  ctx.scale(u, u);
+  stars(ctx, LW, LH, t);
+  (stages[stage] || title)(ctx, LW, LH, t);
+  ctx.restore();
 };

@@ -33,12 +33,15 @@ const paintChrome = () => {
 
 const resize = () => {
   const rect = canvas.getBoundingClientRect();
-  canvas.width = Math.max(1, rect.width * devicePixelRatio);
-  canvas.height = Math.max(1, rect.height * devicePixelRatio);
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  canvas.width = Math.max(1, Math.round(rect.width * dpr));
+  canvas.height = Math.max(1, Math.round(rect.height * dpr));
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 };
 const frame = (now) => {
   const t = reduce ? 0.8 : (now - started) / 1000;
-  drawStage(ctx, canvas.width, canvas.height, pages[index].stage, t);
+  const rect = canvas.getBoundingClientRect();
+  drawStage(ctx, rect.width, rect.height, pages[index].stage, t);
   if (!reduce) requestAnimationFrame(frame);
 };
 const go = (next) => {
