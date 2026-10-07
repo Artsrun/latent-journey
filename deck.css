@@ -27,7 +27,7 @@ main {
   gap: 16px;
   padding: 12px 0 76px;
 }
-#stage { width: 100%; aspect-ratio: 16 / 9; display: block; background: #05080e; border: 1px solid var(--line); touch-action: pan-y; }
+#stage { width: min(100%, calc(50dvh * 16 / 9)); margin-inline: auto; aspect-ratio: 16 / 9; display: block; background: #05080e; border: 1px solid var(--line); touch-action: pan-y; }
 .meta { margin: 0; color: var(--amber); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
 h1 { margin: 4px 0 0; font-size: clamp(1.35rem, 5vw, 1.8rem); font-weight: 560; letter-spacing: -0.02em; }
 .formula { margin: 6px 0 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 15px; color: var(--ink); }
