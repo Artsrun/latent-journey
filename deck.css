@@ -8,9 +8,10 @@
   --amber: #e4b15c;
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 16px/1.45 ui-sans-serif, system-ui, sans-serif; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 16px/1.45 ui-sans-serif, system-ui, sans-serif; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 a { color: var(--amber); text-decoration: none; }
-button { font: inherit; color: var(--ink); background: transparent; border: 1px solid var(--line); min-height: 44px; padding: 0 16px; }
+button { font: inherit; color: var(--ink); background: transparent; border: 1px solid var(--line); min-height: 44px; padding: 0 16px; touch-action: manipulation; }
+button:active { transform: none; }
 button:focus-visible, a:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .top, .pager {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -27,7 +28,7 @@ main {
   gap: 16px;
   padding: 12px 0 76px;
 }
-#stage { width: min(100%, calc(50dvh * 16 / 9)); margin-inline: auto; aspect-ratio: 16 / 9; display: block; background: #05080e; border: 1px solid var(--line); touch-action: pan-y; }
+#stage { width: min(100%, calc(50svh * 16 / 9)); margin-inline: auto; aspect-ratio: 16 / 9; display: block; background: #05080e; border: 1px solid var(--line); touch-action: manipulation; }
 .meta { margin: 0; color: var(--amber); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
 h1 { margin: 4px 0 0; font-size: clamp(1.35rem, 5vw, 1.8rem); font-weight: 560; letter-spacing: -0.02em; }
 .formula { margin: 6px 0 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 15px; color: var(--ink); }

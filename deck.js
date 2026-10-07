@@ -30,8 +30,11 @@ const paintChrome = () => {
   history.replaceState(null, "", `#${page.id}`);
 };
 
+let lastW = 0;
 const resize = () => {
   const rect = canvas.getBoundingClientRect();
+  if (Math.abs(rect.width - lastW) < 1) return;
+  lastW = rect.width;
   const dpr = Math.min(devicePixelRatio || 1, 2);
   canvas.width = Math.max(1, Math.round(rect.width * dpr));
   canvas.height = Math.max(1, Math.round(rect.height * dpr));
